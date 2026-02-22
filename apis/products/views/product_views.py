@@ -4,6 +4,7 @@ from rest_framework.pagination import PageNumberPagination
 from apis.commons.views import BaseViewSet, serializer_view
 from apis.commons.base_permissions import IsAdminUser
 from apis.products.controllers import ProductController
+from apis.products.docs.product_docs import DOC_PRODUCT_VIEWSET
 from apis.products.serializers import (
     ProductCreateReqSerializer,
     ProductUpdateReqSerializer,
@@ -12,7 +13,7 @@ from apis.products.serializers import (
 from apis.products.filters import ProductFilter
 from domains.products.models import Product
 
-
+@DOC_PRODUCT_VIEWSET
 class ProductViewSet(BaseViewSet):
     queryset = Product.objects
     serializer_class = ProductResSerializer
@@ -28,6 +29,7 @@ class ProductViewSet(BaseViewSet):
         "destroy": [IsAdminUser],
     }
 
+    @serializer_view(req_serializer=None, res_serializer=ProductResSerializer)
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.controller_class().list())
         paginator = PageNumberPagination()
@@ -50,6 +52,7 @@ class ProductViewSet(BaseViewSet):
         return self.controller_class().update(instance, validated_data)
 
     @serializer_view(status=status.HTTP_204_NO_CONTENT)
-    def destroy(self, request, product_uuid=None, *args, **kwargs):
+    def destroy(self, request, product_uuid=None, *args, **kwargs) -> str:
         instance = self.controller_class().retrieve(product_uuid)
         self.controller_class().delete(instance)
+        return "SUCCESS"
