@@ -1,0 +1,44 @@
+[project]
+name = "shopping-mall-api"
+version = "0.1.0"
+description = "Shopping Mall Django REST API"
+requires-python = ">=3.11"
+dependencies = [
+    "django>=5.2.4",
+    "djangorestframework>=3.16.0",
+    "djangorestframework-simplejwt>=5.5.0",
+    "drf-spectacular>=0.28.0",
+    "django-filter>=25.1",
+    "django-cors-headers>=4.7.0",
+    "djangorestframework-camel-case>=1.4.2",
+    "psycopg2-binary>=2.9.10",
+    "django-redis>=5.4.0",
+    "celery>=5.5.2",
+    "django-celery-beat>=2.8.1",
+    "django-storages>=1.14.5",
+    "boto3>=1.38.0",
+    "httpx>=0.28.1",
+    "python-dotenv>=1.1.0",
+    "sentry-sdk>=2.29.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.11.0",
+    "pytest>=8.3.5",
+    "pytest-django>=4.11.1",
+    "pytest-xdist>=3.6.1",
+    "factory-boy>=3.3.3",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "configs.settings.test"
+python_files = ["test_*.py"]
